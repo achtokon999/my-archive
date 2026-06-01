@@ -1,0 +1,129 @@
+const imageInput = document.getElementById("imageInput");
+const preview = document.getElementById("preview");
+const titleInput = document.getElementById("titleInput");
+const memoInput = document.getElementById("memoInput");
+const saveBtn = document.getElementById("saveBtn");
+const recordList = document.getElementById("recordList");
+
+let currentImage = "";
+
+imageInput.addEventListener("change", function () {
+
+    const file = this.files[0];
+
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+        currentImage = e.target.result;
+        preview.src = currentImage;
+        preview.style.display = "block";
+    };
+
+    reader.readAsDataURL(file);
+});
+
+saveBtn.addEventListener("click", saveRecord);
+
+function saveRecord() {
+
+    const title = titleInput.value.trim();
+    const memo = memoInput.value.trim();
+
+    if (!title) {
+        alert("제목을 입력하세요.");
+        return;
+    }
+
+    const record = {
+        id: Date.now(),
+        title,
+        memo,
+        image: currentImage,
+        createdAt: new Date().toLocaleString("ko-KR")
+    };
+
+    const records =
+        JSON.parse(localStorage.getItem("museumRecords")) || [];
+
+    records.unshift(record);
+
+    localStorage.setItem(
+        "museumRecords",
+        JSON.stringify(records)
+    );
+
+    titleInput.value = "";
+    memoInput.value = "";
+    imageInput.value = "";
+    preview.src = "";
+    preview.style.display = "none";
+    currentImage = "";
+
+    renderRecords();
+}
+
+function deleteRecord(id) {
+
+    const result = confirm("삭제하시겠습니까?");
+
+    if (!result) return;
+
+    let records =
+        JSON.parse(localStorage.getItem("museumRecords")) || [];
+
+    records = records.filter(
+        record => record.id !== id
+    );
+
+    localStorage.setItem(
+        "museumRecords",
+        JSON.stringify(records)
+    );
+
+    renderRecords();
+}
+
+function renderRecords() {
+
+    const records =
+        JSON.parse(localStorage.getItem("museumRecords")) || [];
+
+    recordList.innerHTML = "";
+
+    records.forEach(record => {
+
+        const div = document.createElement("div");
+
+        div.className = "record";
+
+        div.innerHTML = `
+            ${record.image ?
+            `<img src="${record.image}">`
+            : ""}
+
+            <div class="record-title">
+                ${record.title}
+            </div>
+
+            <div class="record-date">
+                ${record.createdAt}
+            </div>
+
+            <div>
+                ${record.memo}
+            </div>
+
+            <button
+                class="delete-btn"
+                onclick="deleteRecord(${record.id})">
+                삭제
+            </button>
+        `;
+
+        recordList.appendChild(div);
+    });
+}
+
+renderRecords();
