@@ -1,3 +1,11 @@
+const SUPABASE_URL = 'https://dnudglrwjftrkqtmnwcq.supabase.co/rest/v1/';
+
+const SUPABASE_KEY = 'sb_publishable_5yNAinYJAzskYOOEWbBrPA_3PqnfXp1';
+
+const supabaseClient = supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
 const imageInput = document.getElementById("imageInput");
 const preview = document.getElementById("preview");
 const titleInput = document.getElementById("titleInput");
