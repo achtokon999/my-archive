@@ -176,3 +176,9 @@ ${record.category}
 }
 
 renderRecords();
+function filterRecords(category) {
+
+    currentFilter = category;
+
+    renderRecords();
+}
