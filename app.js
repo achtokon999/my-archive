@@ -118,22 +118,32 @@ function deleteRecord(id) {
     renderRecords();
 }
 
-function renderRecords() {
+async function renderRecords() {
 
-    const records =
-        JSON.parse(localStorage.getItem("museumRecords")) || [];
+    const { data, error } =
+        await supabaseClient
+            .from("records")
+            .select("*")
+            .order("created_at", {
+                ascending: false
+            });
+
+    if (error) {
+        console.error(error);
+        return;
+    }
 
     recordList.innerHTML = "";
 
-    records.forEach(record => {
+    data.forEach(record => {
 
         const div = document.createElement("div");
 
         div.className = "record";
 
         div.innerHTML = `
-            ${record.image ?
-            `<img src="${record.image}">`
+            ${record.image_url ?
+            `<img src="${record.image_url}">`
             : ""}
 
             <div class="record-title">
@@ -141,18 +151,13 @@ function renderRecords() {
             </div>
 
             <div class="record-date">
-                ${record.createdAt}
+                ${new Date(record.created_at)
+                    .toLocaleString("ko-KR")}
             </div>
 
             <div>
-                ${record.memo}
+                ${record.memo || ""}
             </div>
-
-            <button
-                class="delete-btn"
-                onclick="deleteRecord(${record.id})">
-                삭제
-            </button>
         `;
 
         recordList.appendChild(div);
