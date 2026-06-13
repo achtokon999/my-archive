@@ -138,7 +138,13 @@ async function renderRecords() {
     }
 
     recordList.innerHTML = "";
-
+const filteredData =
+    currentFilter === "전체"
+    ? data
+    : data.filter(
+        record =>
+        record.category === currentFilter
+    );
     data.forEach(record => {
 
         const div = document.createElement("div");
