@@ -97,3 +97,14 @@ select {
     border: 1px solid #ddd;
     border-radius: 8px;
 }
+.filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.filter-bar button {
+    width: auto;
+    padding: 8px 12px;
+}
