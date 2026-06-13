@@ -9,6 +9,8 @@ const supabaseClient = supabase.createClient(
 const imageInput = document.getElementById("imageInput");
 const preview = document.getElementById("preview");
 const titleInput = document.getElementById("titleInput");
+const categoryInput =
+document.getElementById("categoryInput");
 const memoInput = document.getElementById("memoInput");
 const saveBtn = document.getElementById("saveBtn");
 const recordList = document.getElementById("recordList");
