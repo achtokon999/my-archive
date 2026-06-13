@@ -14,7 +14,7 @@ document.getElementById("categoryInput");
 const memoInput = document.getElementById("memoInput");
 const saveBtn = document.getElementById("saveBtn");
 const recordList = document.getElementById("recordList");
-
+let currentFilter = "전체";
 let currentImage = "";
 
 imageInput.addEventListener("change", function () {
