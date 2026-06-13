@@ -40,7 +40,8 @@ async function saveRecord() {
 
     const title = titleInput.value.trim();
     const memo = memoInput.value.trim();
-
+    const category =
+          categoryInput.value;
     if (!title) {
         alert("제목을 입력하세요.");
         return;
@@ -79,9 +80,10 @@ async function saveRecord() {
             .from("records")
             .insert([
                 {
-                    title: title,
-                    memo: memo,
-                    image_url: imageUrl
+                   title: title,
+                   category: category,
+                   memo: memo,
+                   image_url: imageUrl
                 }
             ]);
 
