@@ -1,6 +1,6 @@
 {
   "name": "나만의 박물관",
-  "short_name": "나만의 박물관",
+  "short_name": "my museum",
   "start_url": "./",
   "display": "standalone",
   "background_color": "#ffffff",
