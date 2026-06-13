@@ -145,7 +145,7 @@ const filteredData =
         record =>
         record.category === currentFilter
     );
-    data.forEach(record => {
+   filteredData.forEach(record => {
 
         const div = document.createElement("div");
 
