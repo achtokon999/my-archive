@@ -153,6 +153,13 @@ async function renderRecords() {
             <div class="record-title">
                 ${record.title}
             </div>
+            <div style="
+font-size:14px;
+color:#2e7d32;
+margin-bottom:6px;
+">
+${record.category}
+</div>
 
             <div class="record-date">
                 ${new Date(record.created_at)
