@@ -34,7 +34,7 @@ imageInput.addEventListener("change", function () {
 
 saveBtn.addEventListener("click", saveRecord);
 
-function saveRecord() {
+async function saveRecord() {
 
     const title = titleInput.value.trim();
     const memo = memoInput.value.trim();
@@ -44,30 +44,55 @@ function saveRecord() {
         return;
     }
 
-    const record = {
-        id: Date.now(),
-        title,
-        memo,
-        image: currentImage,
-        createdAt: new Date().toLocaleString("ko-KR")
-    };
+    let imageUrl = "";
 
-    const records =
-        JSON.parse(localStorage.getItem("museumRecords")) || [];
+    const file = imageInput.files[0];
 
-    records.unshift(record);
+    if (file) {
 
-    localStorage.setItem(
-        "museumRecords",
-        JSON.stringify(records)
-    );
+        const fileName =
+            `${Date.now()}-${file.name}`;
+
+        const { error: uploadError } =
+            await supabaseClient.storage
+                .from("photos")
+                .upload(fileName, file);
+
+        if (uploadError) {
+            alert("사진 업로드 실패");
+            console.error(uploadError);
+            return;
+        }
+
+        const { data } =
+            supabaseClient.storage
+                .from("photos")
+                .getPublicUrl(fileName);
+
+        imageUrl = data.publicUrl;
+    }
+
+    const { error } =
+        await supabaseClient
+            .from("records")
+            .insert([
+                {
+                    title: title,
+                    memo: memo,
+                    image_url: imageUrl
+                }
+            ]);
+
+    if (error) {
+        alert("저장 실패");
+        console.error(error);
+        return;
+    }
 
     titleInput.value = "";
     memoInput.value = "";
     imageInput.value = "";
-    preview.src = "";
     preview.style.display = "none";
-    currentImage = "";
 
     renderRecords();
 }
